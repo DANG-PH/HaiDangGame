@@ -488,13 +488,15 @@ frameborder="1"
 
     <div id="mobile-controls">
     <!-- Bên trái: điều khiển -->
+    <!-- Bên trái: điều khiển -->
     <div class="left-controls">
-        <button onclick="pressKey('a')">←</button>
-        <button onclick="pressKey('d')">→</button>
+        <button onpointerdown="holdKey('a')" onpointerup="releaseKey('a')" onpointerleave="releaseKey('a')">←</button>
+        <button onpointerdown="holdKey('d')" onpointerup="releaseKey('d')" onpointerleave="releaseKey('d')">→</button>
         <button onclick="pressKey('k')">↑</button>
         <button onclick="pressKey('l')">Dash</button>
-        <button onclick="pressKey('s')">Đỡ</button>
+        <button onpointerdown="holdKey('s')" onpointerup="releaseKey('s')" onpointerleave="releaseKey('s')">Đỡ</button>
     </div>
+
 
     <!-- Bên phải: kỹ năng & tấn công -->
     <div class="right-controls">
@@ -519,20 +521,93 @@ frameborder="1"
     </div>
 
     <script>
-        function pressKey(key) {
+        function pressKey(keyChar) {
         const canvas = document.getElementById("canvas");
-        canvas.focus();  // Focus vào canvas để nhận phím
+        canvas.focus();
 
-        const event = new KeyboardEvent("keydown", {
-            key: key,
-            code: key,
-            keyCode: key.charCodeAt(0),
-            which: key.charCodeAt(0),
-            bubbles: true,
-            cancelable: true
+        // Map phím cần dùng với đúng code
+        const keyMap = {
+            "1": { code: "Digit1", key: "1" },
+            "2": { code: "Digit2", key: "2" },
+            "3": { code: "Digit3", key: "3" },
+            "c": { code: "KeyC", key: "c" },
+            "Enter": { code: "Enter", key: "Enter" },
+            "a": { code: "KeyA", key: "a" },
+            "d": { code: "KeyD", key: "d" },
+            "k": { code: "KeyK", key: "k" },
+            "l": { code: "KeyL", key: "l" },
+            "s": { code: "KeyS", key: "s" },
+            "j": { code: "KeyJ", key: "j" },
+            "u": { code: "KeyU", key: "u" },
+            "i": { code: "KeyI", key: "i" },
+            "w": { code: "KeyW", key: "w" },
+            "y": { code: "KeyY", key: "y" },
+            "h": { code: "KeyH", key: "h" },
+            "t": { code: "KeyT", key: "t" },
+            "o": { code: "KeyO", key: "o" },
+        };
+
+        const mapping = keyMap[keyChar];
+        if (!mapping) return;
+
+        const downEvent = new KeyboardEvent("keydown", {
+            code: mapping.code,
+            key: mapping.key,
+            bubbles: true
         });
 
-        canvas.dispatchEvent(event);
+        const upEvent = new KeyboardEvent("keyup", {
+            code: mapping.code,
+            key: mapping.key,
+            bubbles: true
+        });
+
+        canvas.dispatchEvent(downEvent);
+        setTimeout(() => {
+            canvas.dispatchEvent(upEvent);
+        }, 100);
+    }
+
+        window.onload = () => {
+        const canvas = document.getElementById("canvas");
+        canvas.focus();
+
+        // Nhấp chuột ảo để kích hoạt input
+        canvas.click();
+
+        // Cố định kích thước nếu cần
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    function holdKey(keyChar) {
+    const canvas = document.getElementById("canvas");
+    canvas.focus();
+
+    const mapping = keyMap[keyChar];
+    if (!mapping) return;
+
+    const downEvent = new KeyboardEvent("keydown", {
+        code: mapping.code,
+        key: mapping.key,
+        bubbles: true
+    });
+
+    canvas.dispatchEvent(downEvent);
+    }
+
+    function releaseKey(keyChar) {
+        const canvas = document.getElementById("canvas");
+
+        const mapping = keyMap[keyChar];
+        if (!mapping) return;
+
+        const upEvent = new KeyboardEvent("keyup", {
+            code: mapping.code,
+            key: mapping.key,
+            bubbles: true
+        });
+
+        canvas.dispatchEvent(upEvent);
     }
 
 
@@ -546,6 +621,7 @@ frameborder="1"
         width: 100%;
         z-index: 9999;
         pointer-events: none;
+        font-family: 'Verdana', sans-serif;
     }
 
     .left-controls, .right-controls, .top-controls {
@@ -572,36 +648,46 @@ frameborder="1"
     }
 
     .top-controls {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    pointer-events: auto;
-    z-index: 9999;
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        pointer-events: auto;
+        z-index: 9999;
     }
 
-
+    /* Nút bấm phong cách game */
     #mobile-controls button {
-        padding: 10px 12px;
+        padding: 10px 14px;
         font-size: 14px;
-        border-radius: 8px;
-        background-color: #ffffffcc;
-        border: 1px solid #999;
-        box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+        border-radius: 12px;
+        background: linear-gradient(to bottom, #ffffffee, #ddd);
+        border: 2px solid #444;
+        box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
         cursor: pointer;
-        min-width: 60px;
+        min-width: 70px;
+        color: #111;
+        font-weight: bold;
+        transition: transform 0.1s, background 0.2s;
+    }
+
+    #mobile-controls button:active {
+        transform: scale(0.96);
+        background: #ccc;
+        box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     @media (min-width: 768px) {
         #mobile-controls button {
-        font-size: 16px;
-        padding: 12px 16px;
-        min-width: 80px;
+            font-size: 16px;
+            padding: 12px 18px;
+            min-width: 90px;
         }
     }
+
     </style>
 
 </body>
