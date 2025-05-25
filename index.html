@@ -521,10 +521,6 @@ frameborder="1"
     </div>
 
     <script>
-        function pressKey(keyChar) {
-        const canvas = document.getElementById("canvas");
-        canvas.focus();
-
         // Map phím cần dùng với đúng code
         const keyMap = {
             "1": { code: "Digit1", key: "1" },
@@ -546,6 +542,10 @@ frameborder="1"
             "t": { code: "KeyT", key: "t" },
             "o": { code: "KeyO", key: "o" },
         };
+
+        function pressKey(keyChar) {
+        const canvas = document.getElementById("canvas");
+        canvas.focus();
 
         const mapping = keyMap[keyChar];
         if (!mapping) return;
