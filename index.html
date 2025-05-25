@@ -484,6 +484,106 @@ frameborder="1"
     }
 
     </script>
+    <!-- NÚT CẢM ỨNG MOBILE CHO PLAYER 1 -->
+
+    <div id="mobile-controls">
+    <!-- Bên trái: điều khiển -->
+    <div class="left-controls">
+        <button onclick="pressKey('a')">←</button>
+        <button onclick="pressKey('d')">→</button>
+        <button onclick="pressKey('k')">↑</button>
+        <button onclick="pressKey('l')">Dash</button>
+        <button onclick="pressKey('s')">Đỡ</button>
+    </div>
+
+    <!-- Bên phải: kỹ năng & tấn công -->
+    <div class="right-controls">
+        <button onclick="pressKey('j')">Đánh</button>
+        <button onclick="pressKey('u')">Skill 1</button>
+        <button onclick="pressKey('i')">Skill 2</button>
+        <button onclick="pressKey('w')">Skill 3</button>
+        <button onclick="pressKey('y')">Skill 4</button>
+        <button onclick="pressKey('h')">Ultimate</button>
+        <button onclick="pressKey('t')">Trạng thái</button>
+        <button onclick="pressKey('o')">Biến hình</button>
+    </div>
+
+    <!-- Trên cùng: chọn chế độ & nhân vật -->
+    <div class="top-controls">
+        <button onclick="pressKey('Enter')">Enter</button>
+        <button onclick="pressKey('c')">Chơi với máy</button>
+        <button onclick="pressKey('1')">Goku</button>
+        <button onclick="pressKey('2')">Vegeta</button>
+        <button onclick="pressKey('3')">Piccolo</button>
+    </div>
+    </div>
+
+    <script>
+    function pressKey(key) {
+        const event = new KeyboardEvent("keydown", { key: key });
+        document.dispatchEvent(event);
+    }
+    </script>
+
+    <style>
+    #mobile-controls {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        pointer-events: none;
+    }
+
+    .left-controls, .right-controls, .top-controls {
+        display: flex;
+        gap: 6px;
+        margin: 4px;
+        pointer-events: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .left-controls {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        flex-direction: column;
+    }
+
+    .right-controls {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column;
+    }
+
+    .top-controls {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    #mobile-controls button {
+        padding: 10px 12px;
+        font-size: 14px;
+        border-radius: 8px;
+        background-color: #ffffffcc;
+        border: 1px solid #999;
+        box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+        cursor: pointer;
+        min-width: 60px;
+    }
+
+    @media (min-width: 768px) {
+        #mobile-controls button {
+        font-size: 16px;
+        padding: 12px 16px;
+        min-width: 80px;
+        }
+    }
+    </style>
 
 </body>
 </html>
