@@ -519,10 +519,23 @@ frameborder="1"
     </div>
 
     <script>
-    function pressKey(key) {
-        const event = new KeyboardEvent("keydown", { key: key });
-        document.dispatchEvent(event);
+        function pressKey(key) {
+        const canvas = document.getElementById("canvas");
+        canvas.focus();  // Focus vào canvas để nhận phím
+
+        const event = new KeyboardEvent("keydown", {
+            key: key,
+            code: key,
+            keyCode: key.charCodeAt(0),
+            which: key.charCodeAt(0),
+            bubbles: true,
+            cancelable: true
+        });
+
+        canvas.dispatchEvent(event);
     }
+
+
     </script>
 
     <style>
@@ -559,11 +572,17 @@ frameborder="1"
     }
 
     .top-controls {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    pointer-events: auto;
+    z-index: 9999;
     }
+
 
     #mobile-controls button {
         padding: 10px 12px;
